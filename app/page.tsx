@@ -1,5 +1,8 @@
 import Input from "@/app/components/input";
-import Loader from '@/app/components/loader';
+import Loader from "@/app/components/loader";
+import Button from "./components/button";
+import Image from "next/image";
+import ChevronLeftIcon from "@/public/icons/chevronLeft.svg";
 
 export default function Home() {
   return (
@@ -14,12 +17,18 @@ export default function Home() {
         <div className="text-16px line-height-24px text-text-light-2 mb-4">
           This is where we send the note
         </div>
-        <div>
-          <Input type="text" placeholder="Enter your email" rightIcon={Loader} />
-          <div className="flex flex-row justify-between mt-2">
-            <button>Back</button>
-            <button>Next</button>
-          </div>
+        <Input
+          type="text"
+          placeholder="Enter your email"
+          rightIcon={Loader}
+          className="mb-4"
+        />
+        <div className="flex flex-row justify-between mt-2">
+          <Button variant="ghost">
+            <Image src={ChevronLeftIcon} alt="Back" className="mr-2 w-2 h-2 inline" />
+            Back
+          </Button>
+          <Button disabled>Next</Button>
         </div>
       </div>
     </div>
