@@ -14,6 +14,7 @@
   /* Text variations */
   --text: #0d0d12;
   --text-light: #4B5563;
+  --text-light-2: #353849;
 }
 
 @theme inline {
@@ -23,6 +24,7 @@
   --color-primary: var(--primary);
   --color-text: var(--text);
   --color-text-light: var(--text-light);
+  --color-text-light-2: var(--text-light-2);
   --color-background-alt: var(--background-alt);
   --color-avatar: var(--color-avatar);
   /* Fonts */
