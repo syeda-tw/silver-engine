@@ -127,6 +127,7 @@ export default function Home() {
         onComplete: () => {
           setIsLoaderShown(false);
           setIsInputChangeDisabled(false);
+          setOtpValue("")
         },
       })
       .to(
