@@ -8,6 +8,7 @@ import Image from "next/image";
 import ChevronLeftIcon from "@/public/icons/chevronLeft.svg";
 import AnimatedInput from "./components/animatedComponents/animatedInput";
 import gsap from "gsap";
+import OTPInput from "./components/otpInput";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export default function Home() {
   const [isLoaderShown, setIsLoaderShown] = useState(false);
   const [isInputChangeDisabled, setIsInputChangeDisabled] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const [otpValue, setOtpValue] = useState("");
 
   const realInput = useRef<HTMLInputElement>(null);
   const animatedInput = useRef<HTMLInputElement>(null);
@@ -28,10 +30,6 @@ export default function Home() {
     useState(false);
 
   useEffect(() => {
-    console.log(
-      "antimatedInputAnimationComplete",
-      antimatedInputAnimationComplete
-    );
     if (antimatedInputAnimationComplete) {
       gsap
         .timeline()
@@ -57,7 +55,6 @@ export default function Home() {
     gsap
       .timeline({
         onComplete: () => {
-          console.log("on complete outter");
           setTriggerAimationOnAnimatedInput(true);
         },
       })
@@ -174,7 +171,27 @@ export default function Home() {
             </div>
           </div>
           <div ref={otpDiv} className="overflow-hidden h-0">
-            this is the OTP FORM
+            <div className="p-4 h-full">
+              <div className="font-bold text-16px line-height-24px">
+                Enter verification code
+              </div>
+              <div className="text-14px line-height-20px text-text-light-2 mb-4">
+                Enter the code sent to justin2013@gmail.com to use your saved
+                information.
+              </div>
+              <OTPInput
+                className="mb-4"
+                value={otpValue}
+                onChange={(value) => setOtpValue(value)}
+              />
+              <span className="text-14px line-height-20px text-text-light-2">
+                Didn’t receive a code?
+              </span>
+              <span className="text-14px line-height-20px text-primary">
+                {" "}
+                Send again
+              </span>
+            </div>
           </div>
         </div>
 
@@ -187,7 +204,7 @@ export default function Home() {
             />
             Back
           </Button>
-          <Button disabled={!isEmailValid}>Next</Button>
+          <Button disabled={otpValue.length !== 5}>Next</Button>
         </div>
       </div>
     </div>
