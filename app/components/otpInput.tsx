@@ -111,7 +111,7 @@ const OTPInput = ({
           onChange={(e) => handleInputChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           className="
-            w-12 h-12 text-center text-lg font-medium
+            w-10 h-10 sm:w-12 sm:h-12 text-center text-base sm:text-lg font-medium
             border rounded-md transition-all
             bg-background text-text
             border-text-light/20

@@ -12,18 +12,23 @@ const Sidebar = () => {
     <div
       className={`
         relative bg-background-alt transition-all duration-300 ease-in-out
-        ${isCollapsed ? "w-16" : "w-[354px]"}
-        min-h-screen
+        ${isCollapsed ? "w-0 lg:w-16" : "w-[354px]"}
+        min-h-screen overflow-hidden
       `}
     >
       {/* Toggle Button */}
-      {/*<button
+      <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-6 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-primary/80 transition-colors md:hidden"
-        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        className={`
+          fixed top-6 bg-primary text-background rounded-lg w-8 h-8 flex items-center justify-center hover:opacity-80 transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-primary/20 lg:hidden z-50
+          ${isCollapsed ? "left-4" : "right-4"}
+        `}
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
-        {isCollapsed ? '→' : '←'}
-      </button>*/}
+        <span className="text-sm font-bold">
+          {isCollapsed ? "→" : "←"}
+        </span>
+      </button>
 
       {/* Sidebar Content */}
       <div className="p-2 h-full">
