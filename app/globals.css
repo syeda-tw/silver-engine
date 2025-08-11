@@ -1,19 +1,18 @@
 @import "tailwindcss";
 
-
 :root {
   /* Base colors */
   --background: #ffffff;
   --foreground: #0d0d12; /* Used as main text color */
-  --background-alt: #E8F0FD;
-  --color-avatar: #FAB020;
+  --background-alt: #e8f0fd;
+  --color-avatar: #fab020;
 
   /* Brand colors */
   --primary: #2563eb;
 
   /* Text variations */
   --text: #0d0d12;
-  --text-light: #4B5563;
+  --text-light: #4b5563;
   --text-light-2: #353849;
 }
 
@@ -29,12 +28,12 @@
   --color-avatar: var(--color-avatar);
   /* Fonts */
   --font-sans: var(--font-satoshi);
-   /* Font sizes */
-   --text-20px: 1.25rem;
-   --text-14px: 0.875rem;
-   --text-32px: 2rem;
-   --text-16px: 1rem;
-   --text-12px: 0.75rem;
+  /* Font sizes */
+  --text-20px: 1.25rem;
+  --text-14px: 0.875rem;
+  --text-32px: 2rem;
+  --text-16px: 1rem;
+  --text-12px: 0.75rem;
 }
 
 body {
