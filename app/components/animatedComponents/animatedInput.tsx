@@ -40,25 +40,31 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
 
         // Animate label in, then animate input text and change button
         tl.to(inputTextRef.current, {
-          duration: 1,
+          duration: 0.5,
           x: 70,
           ease: "power2.in",
         })
           .to(
             labelRef.current,
             {
-              duration: 1,
+              duration: 0.5,
               opacity: 1,
               x: 2,
-              ease: "power1.in",
+              ease: "power2.in",
             },
-            "-=.5"
           )
+          .to(inputTextRef.current, {
+            onStart: () => {
+              if (inputTextRef.current) {
+                inputTextRef.current.classList.add("shine-text");
+              }
+            },
+          }, "+=0.5")
           .to(changeButtonRef.current, {
             duration: 1,
             opacity: 1,
             ease: "power2.in",
-          });
+          },"-=1");
       }
     }, [triggerAimationOnAnimatedInput]);
 
@@ -94,7 +100,7 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
           {/* Text content - animated with GSAP */}
           <span
             ref={inputTextRef}
-            className="text-primary leading-6 flex-1 font-bold text-16px"
+            className="text-primary leading-6 flex-1 font-bold text-[16px]"
             data-animated="input-text"
           >
             {value}

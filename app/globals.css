@@ -41,3 +41,30 @@ body {
   color: var(--foreground);
   font-family: var(--font-satoshi), Arial, Helvetica, sans-serif;
 }
+
+@keyframes shine {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.shine-text {
+  background: linear-gradient(
+    -90deg,
+    #2563EB 21.15%,
+    #C2D5FF 49.52%,
+    #2563EB 69.23%
+  );
+  background-size: 200% 100%; /* Twice as wide for movement */
+  background-repeat: no-repeat;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+  transition: all 0.5s ease-in-out;
+  animation-delay: 0s;
+}

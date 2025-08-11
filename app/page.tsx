@@ -176,7 +176,7 @@ export default function Home() {
                 Enter verification code
               </div>
               <div className="text-14px line-height-20px text-text-light-2 mb-4">
-                Enter the code sent to justin2013@gmail.com to use your saved
+                Enter the code sent to {email} to use your saved
                 information.
               </div>
               <OTPInput
