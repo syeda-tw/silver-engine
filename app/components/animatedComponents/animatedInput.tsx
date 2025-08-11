@@ -8,7 +8,9 @@ interface AnimatedInputProps {
   className?: string;
   id?: string;
   triggerAimationOnAnimatedInput?: boolean;
-  setAntimatedInputAnimationComplete?: (value: boolean) => void;
+  setTriggerAimationOnAnimatedInput: (value: boolean) => void;
+  setAntimatedInputAnimationComplete: (value: boolean) => void;
+  stopAnimation?: () => void;
 }
 
 const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
@@ -18,7 +20,9 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
       value = "",
       className = "",
       triggerAimationOnAnimatedInput = false,
+      setTriggerAimationOnAnimatedInput,
       setAntimatedInputAnimationComplete,
+      stopAnimation,
       ...props
     },
     ref
@@ -27,20 +31,59 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
     const inputTextRef = useRef<HTMLSpanElement>(null);
     const changeButtonRef = useRef<HTMLButtonElement>(null);
 
+    const stopAnimationInternal = () => {
+      gsap
+        .timeline({
+          onComplete: () => {
+            stopAnimation?.();
+          },
+        })
+        .to(
+          labelRef.current,
+          {
+            duration: 0.5,
+            opacity: 0,
+            x: -100,
+            ease: "power2.out",
+          },
+          "-=0.5"
+        )
+        .to(inputTextRef.current, {
+          duration: 0.5,
+          x: 0,
+          ease: "power2.out",
+          onStart: () => {
+            if (inputTextRef.current) {
+              inputTextRef.current.classList.remove("shine-text");
+            }
+          },
+        })
+        .to(
+          changeButtonRef.current,
+          {
+            duration: 1,
+            opacity: 0,
+            ease: "power2.out",
+          },
+          "-=0.5"
+        );
+    };
+
     useEffect(() => {
       // Only run animation when trigger is true
       if (triggerAimationOnAnimatedInput) {
         const tl = gsap.timeline({
           onComplete: () => {
-            if (setAntimatedInputAnimationComplete) {
-              setAntimatedInputAnimationComplete(true);
+            if (setTriggerAimationOnAnimatedInput) {
+              setTriggerAimationOnAnimatedInput(false);
             }
+            setAntimatedInputAnimationComplete(true);
           },
         });
 
         // Animate label in, then animate input text and change button
         tl.to(inputTextRef.current, {
-          duration: 0.5,
+          duration: 1,
           x: 70,
           ease: "power2.in",
         })
@@ -52,21 +95,31 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
               x: 2,
               ease: "power2.in",
             },
+            "-=0.5"
           )
-          .to(inputTextRef.current, {
-            onStart: () => {
-              if (inputTextRef.current) {
-                inputTextRef.current.classList.add("shine-text");
-              }
+
+          .to(
+            changeButtonRef.current,
+            {
+              duration: 0.5,
+              opacity: 1,
+              ease: "power2.in",
             },
-          }, "+=0.5")
-          .to(changeButtonRef.current, {
-            duration: 1,
-            opacity: 1,
-            ease: "power2.in",
-          },"-=1");
+            "-=1"
+          )
+          .to(
+            inputTextRef.current,
+            {
+              onStart: () => {
+                if (inputTextRef.current) {
+                  inputTextRef.current.classList.add("shine-text");
+                }
+              },
+            },
+            "+=1"
+          );
       }
-    }, [triggerAimationOnAnimatedInput]);
+    }, [triggerAimationOnAnimatedInput, setTriggerAimationOnAnimatedInput, setAntimatedInputAnimationComplete]);
 
     return (
       <div
@@ -109,8 +162,10 @@ const AnimatedInput = forwardRef<HTMLDivElement, AnimatedInputProps>(
           <Button
             variant="ghost"
             size="small"
-            onClick={() => {}}
-            className="!hover:no-underline opacity-0"
+            onClick={() => {
+              stopAnimationInternal();
+            }}
+            className="!hover:no-underline opacity-0 z-10"
             ref={changeButtonRef}
           >
             <span className="text-text font-normal border-b-2 border-dotted border-text pb-0.5 transition-colors">

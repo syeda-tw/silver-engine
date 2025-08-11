@@ -15,7 +15,6 @@ export default function Home() {
   //state that manipulate the real input
   const [isLoaderShown, setIsLoaderShown] = useState(false);
   const [isInputChangeDisabled, setIsInputChangeDisabled] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
   const [otpValue, setOtpValue] = useState("");
 
   const realInput = useRef<HTMLInputElement>(null);
@@ -32,7 +31,11 @@ export default function Home() {
   useEffect(() => {
     if (antimatedInputAnimationComplete) {
       gsap
-        .timeline()
+        .timeline({
+          onComplete: () => {
+            setTriggerAimationOnAnimatedInput(false);
+          },
+        })
         .to(otpDiv.current, {
           height: 200,
           display: "block",
@@ -51,6 +54,7 @@ export default function Home() {
     setTimeout(() => {
       setIsLoaderShown(false);
     }, 1000);
+    setAntimatedInputAnimationComplete(false)
 
     gsap
       .timeline({
@@ -104,12 +108,10 @@ export default function Home() {
     const isValid = emailRegex.test(email);
     //if email is not valid, remove loader instantly
     if (!isValid) {
-      setIsEmailValid(false);
       setIsLoaderShown(false);
       setIsInputChangeDisabled(false);
     } else {
       const timeoutId = setTimeout(() => {
-        setIsEmailValid(isValid);
         setIsLoaderShown(true);
         setIsInputChangeDisabled(true);
         startAnimation();
@@ -118,7 +120,50 @@ export default function Home() {
     }
   }, [email]);
 
-  const stopAnimation = () => {};
+  const stopAnimation = () => {
+    //close the otp box
+    gsap
+      .timeline({
+        onComplete: () => {
+          setIsLoaderShown(false);
+          setIsInputChangeDisabled(false);
+        },
+      })
+      .to(
+        otpDiv.current,
+        {
+          height: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        ""
+      )
+      .to(
+        animatedInputWrapper.current,
+        {
+          borderColor: "transparent",
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        "-=0.5"
+      )
+      .to(
+        animatedInput.current,
+        {
+          opacity: 0,
+          duration: 0.5,
+          display: "none",
+          ease: "power2.out",
+        },
+        "-=0.5"
+      )
+      .to(realInput.current, {
+        display: "block",
+        opacity: 1,
+        duration: 0.5,
+        ease: "power2.out",
+      }, "-=0.5");
+  };
 
   return (
     <div className="flex h-full w-full items-center justify-center px-2">
@@ -164,9 +209,13 @@ export default function Home() {
                 label="Email"
                 value={email}
                 triggerAimationOnAnimatedInput={triggerAimationOnAnimatedInput}
+                setTriggerAimationOnAnimatedInput={
+                  setTriggerAimationOnAnimatedInput
+                }
                 setAntimatedInputAnimationComplete={
                   setAntimatedInputAnimationComplete
                 }
+                stopAnimation={stopAnimation}
               />
             </div>
           </div>
@@ -176,8 +225,7 @@ export default function Home() {
                 Enter verification code
               </div>
               <div className="text-14px line-height-20px text-text-light-2 mb-4">
-                Enter the code sent to {email} to use your saved
-                information.
+                Enter the code sent to {email} to use your saved information.
               </div>
               <OTPInput
                 className="mb-4"
@@ -187,7 +235,7 @@ export default function Home() {
               <span className="text-14px line-height-20px text-text-light-2">
                 Didn’t receive a code?
               </span>
-              <span className="text-14px line-height-20px text-primary">
+              <span className="text-14px line-height-20px text-primary cursor-pointer">
                 {" "}
                 Send again
               </span>
